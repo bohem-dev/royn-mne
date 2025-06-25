@@ -2953,7 +2953,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "royn-mne"
+name = "royn"
 version = "0.1.0"
 dependencies = [
  "serde",

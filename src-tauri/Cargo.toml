@@ -1,8 +1,8 @@
 [package]
-name = "royn-mne"
+name = "royn"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "A modular neuroscience data analysis framework"
+authors = ["Philip Press"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
