@@ -13,6 +13,17 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
+
+const CustomNode = ({ data }: any) => (
+  <div className="bg-blue-100 border border-blue-500 rounded px-4 py-2 shadow text-blue-800">
+    {data.label}
+  </div>
+);
+
+const nodeTypes = {
+  default: CustomNode,
+};
+
 const NodeCanvas = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
@@ -26,7 +37,11 @@ const NodeCanvas = () => {
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       const reactFlowBounds = event.currentTarget.getBoundingClientRect();
-      const data = JSON.parse(event.dataTransfer.getData("application/reactflow"));
+      const data = event.dataTransfer.getData("application/reactflow");
+      if (!data) return;
+
+      const parsed = JSON.parse(data);
+      console.log("Dropped data:", parsed);
 
       const position = {
         x: event.clientX - reactFlowBounds.left,
@@ -34,10 +49,10 @@ const NodeCanvas = () => {
       };
 
       const newNode: Node = {
-        id: `${data.id}-${+new Date()}`,
+        id: `${parsed.id}-${+new Date()}`,
         type: "default",
         position,
-        data: { label: data.label },
+        data: { label: parsed.label },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -51,21 +66,20 @@ const NodeCanvas = () => {
   }, []);
 
   return (
-    <div className="flex-1 h-full">
+    <div className="flex-1 h-full" onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlowProvider>
         <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            fitView
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          fitView
         >
-            <Background gap={20} size={1} color="#ccc" />
-            <Controls showInteractive={false} />
-            <MiniMap />
+          <Background gap={20} size={1} color="#ccc" />
+          <Controls showInteractive={false} />
+          <MiniMap />
         </ReactFlow>
       </ReactFlowProvider>
     </div>

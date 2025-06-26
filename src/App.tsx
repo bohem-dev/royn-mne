@@ -1,14 +1,12 @@
-import NodeCanvas from "./components/NodeCanvas";
 import Sidebar from "./components/Sidebar";
+import Canvas from "./components/Canvas";
 
 function App() {
-  
-  return (  
+  return (
     <div className="flex h-screen">
       <Sidebar />
-      <NodeCanvas />
+      <Canvas />
     </div>
-
   );
 }
 
